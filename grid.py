@@ -39,6 +39,14 @@ class Board:
     def reset_board(self):
         self.values = [' ' for x in range(10)]
 
+    def print_header(self):
+        print("+-------------------------------+-------------------------------+")
+        print("|  Welcome to Tic-Tac-Toe 1.0   |        Coordinate Matrix      |")
+        print("+-------------------------------+-------------------------------+")
 
-        
+    def print_scoreboard(self, score_board):
+        players = list(score_board.keys())
+        print("+-------------------------------+-------------------------------+")
+        print(f"   Score: {players[0]} {score_board[players[0]]}, {players[1]} {score_board[players[1]]}")
+        print("+-------------------------------+-------------------------------+")
 
