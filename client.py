@@ -2,6 +2,26 @@ import os
 import time
 from grid import Board
 
+import threading
+# create a separate thread to send and receive data from the server
+def create_thread(target):
+    thread = threading.Thread(target=target)
+    thread.daemon = True #thread that runs in the background to support main/non-daemon thread
+    thread.start() #this will start a separate thread
+
+import socket
+
+HOST = '127.0.0.1'
+PORT = 65432
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((HOST, PORT))
+
+def receive_data():
+    #receive data from server
+    pass
+
+create_thread(receive_data)
 
 board=Board()
 
@@ -18,7 +38,7 @@ def refresh_board():
     #Show the score at the footer
     board.print_scoreboard(score_board)
 
-def single_game(cur_player, player_name):
+def single_game(cur_player):
     
     # represents the board values in the game matrix
     values = board.values
@@ -31,7 +51,7 @@ def single_game(cur_player, player_name):
         # handle player input
         # TRY and EXCEPT block for move input
         try:
-            print("Player ", player_name, " turn. Please choose from 1 - 9. > ", end ="")
+            print("Player ", cur_player, " turn. Please choose from 1 - 9. > ", end ="")
             move = int(input())
         except ValueError:
             print("wrong Input!! Try again")
@@ -56,8 +76,8 @@ def single_game(cur_player, player_name):
 
         #check the result of the board
         if board.check_winner(player_pos, cur_player):
-            refresh_board()
-            print('Player', player_name, ' has won the game!!\n')
+            #refresh_board()
+            #print('Player', cur_player, ' has won the game!!\n')
             return cur_player
 
         if board.check_draw(player_pos):
@@ -82,7 +102,7 @@ if __name__ == "__main__":
     print("\nPlayer 2")
     player2 = input("Enter the name: \n")
 
-    current_player = player1
+    cur_player = player1
 
     player_option = {'X': '', 'O': ''}
 
@@ -97,7 +117,7 @@ if __name__ == "__main__":
     while True:  
         
         #Player choice Menu
-        print(f"""\nTurn to choose for {current_player}
+        print(f"""\nTurn to choose for {cur_player}
         Enter 1 for X
         Enter 2 for O
         Enter 3 to quit""")
@@ -110,15 +130,15 @@ if __name__ == "__main__":
             continue
 
         if choice == 1:
-            player_option['X'] = current_player
-            if current_player == player1:
+            player_option['X'] = cur_player
+            if cur_player == player1:
                 player_option['O'] = player2
             else:
                 player_option['O'] = player1
 
         elif choice == 2:
-            player_option['O'] = current_player
-            if current_player == player1:
+            player_option['O'] = cur_player
+            if cur_player == player1:
                 player_option['X'] = player2
             else:
                 player_option['X'] = player1
@@ -133,21 +153,21 @@ if __name__ == "__main__":
             print("Wrong choice!! Try again.\n")
 
         #execute match and store winning mark
-        winner = single_game(options[choice-1], current_player)
+        winner = single_game(options[choice-1])
 
         if winner != 'D':
             player_won = player_option[winner]
             score_board[player_won] += 1
             refresh_board()
-            # print('Player', current_player, ' has won the game!!\n')
+            print('Player', winner, ' has won the game!!\n')
         # if winner != 'D':
         #     score_board[player_option[winner]] += 1
             
         
-        if current_player == player1:
-            current_player = player2 
+        if cur_player == player1:
+            cur_player = player2 
         else:
-            current_player = player1
+            cur_player = player1
 
         board.reset_board()
 
