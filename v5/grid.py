@@ -95,6 +95,7 @@ class Board:
     #     self.values = [' ' for x in range(10)]
 
     def print_header(self):
+        """Adds a header to the game of the terminal"""
         print("+-------------------------------+-------------------------------+")
         print("|  Welcome to Tic-Tac-Toe 1.0   |        Coordinate Matrix      |")
         print("+-------------------------------+-------------------------------+")
@@ -106,9 +107,23 @@ class Board:
     #     print("+-------------------------------+-------------------------------+")
     
     def clear(self):
+        """Clears the terminal screen """
         os.system("clear")
 
     def refresh_board(self):
+        """Uses three methods from the class to refresh the board
+        
+        Method
+        ------
+        clear()
+            clears the terminal screen
+        
+        print_header()
+            Adds a header to the game of the terminal
+
+        display_board()
+            Prints the current status of the game board with a matrix beside it to help players know where to place their next position    
+        """
         self.clear()
         self.print_header()
         self.display_board()

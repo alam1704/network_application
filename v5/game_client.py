@@ -37,9 +37,13 @@ class Client():
 
 
     def connect(self):
-        """Keeps connection to server and returns true if connected successfully
+        """Method used to connect the open socket from the server. The method has the class attributes self.ADDRESS passed as a tuple
         
+        Raises
+        ------
 
+        Exception
+            When there is an error trying to connect to the host, it throws an exception.
         """
         while True:
             try:
@@ -56,7 +60,12 @@ class Client():
                 self.connect_failed()
 
     def connect_failed(self):
-        """call this method if connection fails"""
+        """call this method if connection fails
+        
+        User will have two option to select when method is called: 
+        1 to abort and exit or
+        2 to retry the connection with the same HOST and PORT
+        """
         choice = input("[A]bort or [R]etry?") # [C]hange address and port, 
         if (choice.lower() == "a"):
             exit()
@@ -65,7 +74,18 @@ class Client():
         #     self.PORT = input("Please enter the port:")
 
     def client_recv(self):
-        """receives packet with specified size from server then checks integrity"""
+        """receives packet with specified size from server then checks integrity
+        
+        Raises
+        ------
+        Exception
+            Client cannot receive message from specified HOST and PORT.
+
+        Returns
+        -------
+        msg
+            A message as a string.
+        """
         while True:
             try:
                 msg = self.client_socket.recv(1024).decode()
@@ -79,7 +99,14 @@ class Client():
                 pass
 
     def client_send(self, msg):
-        """sends message to server with agreed command token to ensure message delivered safely"""
+        """Sends message to server with agreed command token to ensure message delivered safely
+        
+        Raises
+        ------
+
+        Exception
+            When the client is unable to send msg.
+        """
         try:
             self.client_socket.send(msg.encode(self.FORMAT))
             # print(msg)
@@ -88,30 +115,27 @@ class Client():
             pass
 
     def close(self):
-        "Shutdown socket and close"
+        "When the method is called upon, the socket is closed"
         # Shuts down the socket to prevent further send/receive signals
         # self.client_socket.shutdown(socket.SHUT_RDWR)
         # close socket
         self.client_socket.close()
 
-board = Board()
-client=Client()
+board = Board() # create an instance object for Board
+client=Client() # create an instance object for Client
 
 while True:
     print(client.client_recv())
     break
 
 for i in range(4):
-    # handle player input from server
-    # receive string version of input through sockets 
-    # save move as integer on local machine
-    # send string input and convert to int before saving onto local machine
     while True:
         try:
+            # refresh board and handle player input from server
             board.refresh_board()
             print("[WAITING] Other player is choosing position...")
-            move = client.client_recv()
-            move_int = int(move)
+            move = client.client_recv() # receive string version of input through sockets 
+            move_int = int(move) # save move as integer on local machine
             break
         except ValueError:
             print("Player1 disconnected")
@@ -120,7 +144,7 @@ for i in range(4):
             print("\nGame Over.")
             client.close()
             exit()
-    # print(f"{move_int} is.")
+    
 
     # append server move on client side 
     client.player_pos['X'].append(move_int)

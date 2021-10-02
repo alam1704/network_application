@@ -118,6 +118,7 @@ class Server:
 board=Board() # create an instance object for Board
 server= Server() # create an instance object for Server
 
+# Main connection loop
 # loop through until connection establised
 while True:
     # created a try and except block to catch KeyBoardInterrupt.
@@ -130,6 +131,7 @@ while True:
     server.server_send("welcome to server")
     break
 
+# Main game loop
 # Server move will always be 1 more than the client 
 for i in range(5):
     while True:
