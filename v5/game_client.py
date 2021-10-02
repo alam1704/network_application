@@ -161,6 +161,10 @@ for i in range(4):
         client.close()
         exit()
 
+    # Since there are only 9 moves, server will always have last move.
+    if board.check_draw(client.player_pos):
+        print("Its a tie!\n")
+
     while True:
         try:
             print(client.player2, "'s turn. Please choose from 1-9 > ", end="")     

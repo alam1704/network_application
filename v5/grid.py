@@ -1,5 +1,5 @@
 import os
-import sys
+# import sys
 
 class Board:
     """A class to represent the game board.
@@ -38,6 +38,22 @@ class Board:
     # Create a board as a well a default matrix to show players where the positions are
     def display_board(self):
         """Prints the current status of the game board with a matrix beside it to help players know where to place their next position
+        
+        +-------------------------------+-------------------------------+
+        |  Welcome to Tic-Tac-Toe 1.0   |        Coordinate Matrix      |
+        +-------------------------------+-------------------------------+
+
+
+                |     |     	|	     |     |     
+                |     |     	|	  1  |  2  |  3  
+           _____|_____|_____	|	_____|_____|_____
+                |     |     	|	     |     |     
+                |     |     	|	  4  |  5  |  6  
+           _____|_____|_____	|	_____|_____|_____
+                |     |     	|	     |     |     
+                |     |     	|	  7  |  8  |  9  
+                |     |     	|	     |     |     
+
         """
         print("\n")
         print("\t     |     |     \t|\t     |     |     ")
