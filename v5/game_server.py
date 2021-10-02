@@ -68,7 +68,12 @@ board=Board()
 server= Server()
 
 while True:
-    server.waiting_for_connection()
+    try:
+        server.waiting_for_connection()
+    except KeyboardInterrupt:
+        print("\nProgram Exited.")
+        server.close()
+        quit()
     server.server_send("welcome to server")
     break
 
@@ -86,6 +91,10 @@ for i in range(5):
         except ValueError:
             print("Wrong input!! Try again.")
             continue
+        except KeyboardInterrupt:
+            print("\nGame Over")
+            server.close()
+            quit()
 
         if move_int < 1 or move_int > 9:
             print("Wrong Input!! Try again.")
@@ -119,9 +128,18 @@ for i in range(5):
 
         break
     while True:
-        print("[WAITING] Other player is choosing position...")
-        move = server.server_recv()
-        move_int = int(move)
+        try:
+            print("[WAITING] Other player is choosing position...")
+            move = server.server_recv()
+            move_int = int(move)
+        except ValueError:
+            print("Player2 disconnected")
+            server.close()
+            quit()
+        except KeyboardInterrupt:
+            print("Game Over")
+            server.close()
+            quit()
 
         # append client move to player_pos on server side
         server.player_pos['O'].append(move_int)

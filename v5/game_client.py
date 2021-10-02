@@ -35,12 +35,12 @@ class Client():
                 self.connect_failed()
 
     def connect_failed(self):
-        choice = input("[A]bort, [C]hange address and port, or [R]etry?")
+        choice = input("[A]bort or [R]etry?") # [C]hange address and port, 
         if (choice.lower() == "a"):
             exit()
-        elif(choice.lower() == "c"):
-            self.HOST = input("Please enter the address:")
-            self.PORT = input("Please enter the port:")
+        # elif(choice.lower() == "c"):
+        #     self.HOST = input("Please enter the address:")
+        #     self.PORT = input("Please enter the port:")
 
     def client_recv(self):
         """receives packet with specified size from server then checks integrity"""
@@ -71,6 +71,7 @@ class Client():
         self.client_socket.shutdown(socket.SHUT_RDWR)
         # close socket
         self.client_socket.close()
+
 board = Board()
 client=Client()
 
@@ -84,10 +85,18 @@ for i in range(4):
     # save move as integer on local machine
     # send string input and convert to int before saving onto local machine
     while True:
-        print("[WAITING] Other player is choosing position...")
-        move = client.client_recv()
-        move_int = int(move)
-        break
+        try:
+            print("[WAITING] Other player is choosing position...")
+            move = client.client_recv()
+            move_int = int(move)
+            break
+        except ValueError:
+            print("Player1 disconnected")
+            quit()
+        except KeyboardInterrupt:
+            print("\nGame Over.")
+            client.close()
+            quit()
     # print(f"{move_int} is.")
 
     # append server move on client side 
@@ -113,6 +122,11 @@ for i in range(4):
         except ValueError:
             print("Wrong input!! Try again.")
             continue
+        except KeyboardInterrupt:
+            print("Game Over")
+            client.close()
+            quit()    
+
         if move_int < 1 or move_int > 9:
             print("Wrong Input!! Try again.")
             continue
