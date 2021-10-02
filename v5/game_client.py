@@ -1,6 +1,7 @@
 # import socket module
 import socket
 from grid import Board
+from sys import exit
 
 
 
@@ -92,11 +93,11 @@ for i in range(4):
             break
         except ValueError:
             print("Player1 disconnected")
-            quit()
+            exit()
         except KeyboardInterrupt:
             print("\nGame Over.")
             client.close()
-            quit()
+            exit()
     # print(f"{move_int} is.")
 
     # append server move on client side 
@@ -112,7 +113,7 @@ for i in range(4):
     if board.check_winner(client.player_pos, 'X'):
         print("Player1 has won the game!!")
         client.close()
-        quit()
+        exit()
 
     while True:
         try:
@@ -125,7 +126,7 @@ for i in range(4):
         except KeyboardInterrupt:
             print("Game Over")
             client.close()
-            quit()    
+            exit()   
 
         if move_int < 1 or move_int > 9:
             print("Wrong Input!! Try again.")
@@ -151,6 +152,6 @@ for i in range(4):
         if board.check_winner(client.player_pos, 'O'):
             print("You have won the game!!")
             client.close()
-            quit()
+            exit()
         break
 client.close()

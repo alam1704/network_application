@@ -1,5 +1,6 @@
 # import socket module
 import socket
+from sys import exit
 from grid import Board
 
 
@@ -29,11 +30,11 @@ class Server:
                 break
             except:
                 print(f"There was an error when trying to bind to {self.PORT}.")
-                choice = input("[A]bort, [C]hange port, or [R]etry?")
+                choice = input("[A]bort or [R]etry?") # [C]hange port,
                 if (choice.lower() == 'a'):
                     exit()
-                elif (choice.lower() == 'c'):
-                    self.PORT = input("Please enter the port:")
+                # elif (choice.lower() == 'c'):
+                #     self.PORT = input("Please enter the port:")
 
     def server_recv(self):
         """receives packet with specified size from server then checks integrity"""
@@ -73,7 +74,7 @@ while True:
     except KeyboardInterrupt:
         print("\nProgram Exited.")
         server.close()
-        quit()
+        exit()
     server.server_send("welcome to server")
     break
 
@@ -94,7 +95,7 @@ for i in range(5):
         except KeyboardInterrupt:
             print("\nGame Over")
             server.close()
-            quit()
+            exit()
 
         if move_int < 1 or move_int > 9:
             print("Wrong Input!! Try again.")
@@ -120,7 +121,7 @@ for i in range(5):
         if board.check_winner(server.player_pos, "X"):
             print("You have won the game!!")
             server.close()
-            quit()
+            exit()
 
         # Since there are only 9 moves, server will always have last move.
         if board.check_draw(server.player_pos):
@@ -135,11 +136,11 @@ for i in range(5):
         except ValueError:
             print("Player2 disconnected")
             server.close()
-            quit()
+            exit()
         except KeyboardInterrupt:
             print("Game Over")
             server.close()
-            quit()
+            exit()
 
         # append client move to player_pos on server side
         server.player_pos['O'].append(move_int)
@@ -153,7 +154,7 @@ for i in range(5):
         if board.check_winner(server.player_pos, 'O'):
             print("Player 2 has won the game!")
             server.close()
-            quit()
+            exit()
 
         break
 server.close()

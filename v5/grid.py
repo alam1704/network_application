@@ -1,4 +1,5 @@
 import os
+import sys
 
 class Board:
     
@@ -54,7 +55,3 @@ class Board:
     
     def clear(self):
         os.system("clear")
-
-    def exit(self):
-        os.system('exit')
-
